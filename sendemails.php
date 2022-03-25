@@ -13,9 +13,25 @@ function prepareForSending($configFile){
     $seconds = interval / 1000;
     $list = file(__DIR__ . DIRECTORY_SEPARATOR . $config['listFile']);
     $message = file_get_contents(__DIR__ . DIRECTORY_SEPARATOR . $config['messageFile']);
+
+    $phpMailer = new PHPMailer\PHPMailer\PHPMailer();
+
+    $phpMailer->IsSMTP();
+    $phpMailer->SMTPDebug = 1;
+    $phpMailer->SMTPAuth = true;
+    $phpMailer->SMTPSecure = 'tls';
+    $phpMailer->Host = mailServerHost;
+    $phpMailer->Port = mailServerPort;
+    $phpMailer->Username = $config['accountMail'];
+    $phpMailer->Password = $config['accountPassword'];
+
+    if (!$phpMailer->SmtpConnect()) {
+        displayLog("Error! Wrong credentials");
+        exit;
+    }
     
     foreach ($list as $index => $mail) {
-        sendMail($mail, $message, $config);
+        sendMail($mail, $message, $config, $phpMailer);
         
         if(($index+1) % amount === 0){
             sleep($seconds);
@@ -28,24 +44,8 @@ function prepareForSending($configFile){
 /**
  * @throws \PHPMailer\PHPMailer\Exception
  */
-function sendMail($mail, $message, $config) {
+function sendMail($mail, $message, $config, $phpMailer) {
     if(!empty($mail)){
-        $phpMailer = new PHPMailer\PHPMailer\PHPMailer();
-
-        $phpMailer->IsSMTP();
-        $phpMailer->SMTPDebug = 1;
-        $phpMailer->SMTPAuth = true;
-        $phpMailer->SMTPSecure = 'tls';
-        $phpMailer->Host = mailServerHost;
-        $phpMailer->Port = mailServerPort;
-        $phpMailer->Username = $config['accountMail'];
-        $phpMailer->Password = $config['accountPassword'];
-    
-        if (!$phpMailer->SmtpConnect()) {
-            displayLog("Error! Wrong credentials");
-            exit;
-        }
-
         $phpMailer->setFrom($config['mailFrom'], $config['accountMail']);
         $phpMailer->addReplyTo($config['replyTo'], $config['replyToName']);
         $phpMailer->Encoding = 'base64';
