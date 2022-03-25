@@ -19,10 +19,10 @@ function Start() {
  
         $info = pathinfo($_FILES["list"]["name"]);
         $ext = $info['extension'];
-        $listFilePath = 'TemporaryFiles/' . "List_$date.".$ext;
+        $listFilePath = "TemporaryFiles" . DIRECTORY_SEPARATOR . "List_$date.".$ext;
         move_uploaded_file($_FILES["list"]["tmp_name"], $listFilePath);
         
-        $messageFilePath = "TemporaryFiles/Mail_$date.txt";
+        $messageFilePath = "TemporaryFiles" . DIRECTORY_SEPARATOR . "Mail_$date.txt";
         $messageFile = fopen($messageFilePath, 'ab');
         fwrite($messageFile, $_POST["message"]);
         fclose($messageFile);
@@ -39,12 +39,12 @@ function Start() {
         ];
         $mailerConfig = json_encode($mailerConfig, JSON_THROW_ON_ERROR);
     
-        $configFilePath = "TemporaryFiles/Config_$date.json";
+        $configFilePath = "TemporaryFiles" . DIRECTORY_SEPARATOR . "Config_$date.json";
         $configFile = fopen($configFilePath, 'ab');
         fwrite($configFile, $mailerConfig);
         fclose($configFile);
         
-        $cmd = "php sendemails.php -c{$configFilePath} > Logs\log{$date}.log";
+        $cmd = "php sendemails.php -c{$configFilePath} > Logs" . DIRECTORY_SEPARATOR . "log{$date}.log";
         if (str_starts_with(php_uname(), "Windows")){
             pclose(popen("start /B ". $cmd, "r"));
         } else {
