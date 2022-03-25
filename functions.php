@@ -8,7 +8,8 @@ function Start() {
     if(isset(
         $_POST["topic"],
         $_POST["message"],
-        $_POST['mailFrom'],
+        $_POST['accountMail'],
+        $_POST['accountPassword'],
         $_POST['mailFromName'],
         $_POST['replyTo'],
         $_POST['replyToName'],
@@ -30,7 +31,7 @@ function Start() {
             'messageFile' => $messageFilePath,
             'listFile' => $listFilePath,
             'topic' => $_POST["topic"] ?? '',
-            'mailFrom' => $_POST['mailFrom'] ?? '',
+            'mailFrom' => $_POST['mailFromName'] ?? '',
             'accountMail' => $_POST['accountMail'] ?? '',
             'accountPassword' => $_POST['accountPassword'] ?? '',
             'replyTo' => $_POST['replyTo'] ?? '',
