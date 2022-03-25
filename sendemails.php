@@ -46,7 +46,7 @@ function prepareForSending($configFile){
  */
 function sendMail($mail, $message, $config, $phpMailer) {
     if(!empty($mail)){
-        $phpMailer->setFrom($config['mailFrom'], $config['accountMail']);
+        $phpMailer->setFrom($config['accountMail'], $config['mailFrom']);
         $phpMailer->addReplyTo($config['replyTo'], $config['replyToName']);
         $phpMailer->Encoding = 'base64';
         $phpMailer->CharSet = 'UTF-8';
