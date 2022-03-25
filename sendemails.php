@@ -38,10 +38,15 @@ function sendMail($mail, $message, $config) {
         $phpMailer->SMTPSecure = 'tls';
         $phpMailer->Host = mailServerHost;
         $phpMailer->Port = mailServerPort;
-        $phpMailer->Username = mailServerUsername;
-        $phpMailer->Password = mailServerPassword;
+        $phpMailer->Username = $config['accountMail'];
+        $phpMailer->Password = $config['accountPassword'];
+    
+        if (!$phpMailer->SmtpConnect()) {
+            displayLog("Error! Wrong credentials");
+            exit;
+        }
 
-        $phpMailer->setFrom($config['mailFrom'], $config['mailFromName']);
+        $phpMailer->setFrom($config['mailFrom'], $config['accountMail']);
         $phpMailer->addReplyTo($config['replyTo'], $config['replyToName']);
         $phpMailer->Encoding = 'base64';
         $phpMailer->CharSet = 'UTF-8';

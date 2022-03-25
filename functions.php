@@ -1,4 +1,6 @@
 <?php
+include "config.php";
+
 /**
  * @throws JsonException
  */
@@ -29,7 +31,8 @@ function Start() {
             'listFile' => $listFilePath,
             'topic' => $_POST["topic"] ?? '',
             'mailFrom' => $_POST['mailFrom'] ?? '',
-            'mailFromName' => $_POST['mailFromName'] ?? '',
+            'accountMail' => $_POST['accountMail'] ?? '',
+            'accountPassword' => $_POST['accountPassword'] ?? '',
             'replyTo' => $_POST['replyTo'] ?? '',
             'replyToName' => $_POST['replyToName'] ?? '',
         ];
